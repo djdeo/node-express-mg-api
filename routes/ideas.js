@@ -1,87 +1,75 @@
 const express = require('express');
-
 const router = express.Router();
-const ideas = [
-  {
-    id: 1,
-    text: "Create a to-do list app with a drag-and-drop interface.",
-    tag: "productivity",
-    username: "John Doe",
-    date: "2023-03-08"
-  },
-  {
-    id: 2,
-    text: "Develop a social media platform for dog lovers.",
-    tag: "social media",
-    username: "Jane Smith",
-    date: "2023-03-09"
-  },
-  {
-    id: 3,
-    text: "Build a website that helps users find the best hiking trails in their area.",
-    tag: "travel",
-    username: "Bob Jones",
-    date: "2023-03-10"
-  },
-  {
-    id: 4,
-    text: "Create a mobile app that allows users to track their spending and set financial goals.",
-    tag: "finance",
-    username: "Alice Johnson",
-    date: "2023-03-11"
-  },
-  {
-    id: 5,
-    text: "Develop a game that teaches children about the solar system.",
-    tag: "education",
-    username: "Tom Brown",
-    date: "2023-03-12"
+
+const Idea = require('../models/Idea');
+
+router.get('/', async (req, res) => {
+  try {
+    const ideas = await Idea.find();
+    res.json({
+      code: 200,
+      data: ideas,
+      message: 'message'
+    });
+  } catch (error) {
+    res.status(500).json({ code: 500, message: 'Internal Server Error' });
   }
-];
 
-router.get('/', (req, res) => {
-  res.json({
-    code: 200,
-    data: ideas,
-    message: 'message'
-  });
 });
 
-router.get('/:id', (req, res) => {
-  const idea = ideas.find(i => i.id === parseInt(req.params.id));
-  if (!idea) return res.status(404).send('Idea not found');
-  res.json(idea);
+// get idea by id
+router.get('/:id', async (req, res) => {
+  try {
+    const idea = await Idea.findById(req.params.id);
+    res.json({
+      code: 200,
+      data: idea,
+      message: 'message'
+    });
+  } catch (error) {
+    res.status(500).json({ code: 500, message: 'Internal Server Error' });
+  }
 });
 
-router.post('/', (req, res) => {
-  const idea = {
-    id: ideas.length + 1,
+// Add an idea
+router.post('/', async (req, res) => {
+  const idea = new Idea({
     text: req.body.text,
     tag: req.body.tag,
     username: req.body.username,
-    date: new Date().toISOString()
-  };
-  ideas.push(idea);
-  res.status(201).json(idea);
+  });
+  try {
+    const newIdea = await idea.save();
+    res.status(201).json({code:201,data:newIdea});
+  } catch (error) {
+    console.log('error',error);
+    res.status(500).json({code:500,message:'Sorry, wrong'});
+  }
 });
 
-router.put('/:id', (req, res) => {
-  const idea = ideas.find(i => i.id === parseInt(req.params.id));
-  if (!idea) return res.status(404).send('Idea not found');
-  idea.text = req.body.text || idea.text;
-  idea.tag = req.body.tag || idea.tag;
-  res.json(idea);
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedIdea = await Idea.findByIdAndUpdate(req.params.id,
+      {
+        $set: {
+          text: req.body.text,
+          tag: req.body.tag,
+        }
+      },
+      { new: true }
+    );
+    res.json({code:200,data:updatedIdea});
+  } catch (error) {
+    res.status(500).json({ code: 500, message: 'Internal Server Error' });
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  const idea = ideas.find(i => i.id === parseInt(req.params.id));
-  if (!idea) return res.status(404).send('Idea not found');
-  const index = ideas.indexOf(idea);
-  if (idea.username === req.body.username) {
-    ideas.splice(index, 1);
-    res.send('Idea deleted');
-  } else {
-    res.status(403).send(`hi ${req.body.username}, You are not authorized to delete this idea`);
+router.delete('/:id', async (req, res) => {
+  try {
+    const idea = await Idea.findByIdAndDelete(req.params.id);
+    res.json({code:200, message: 'deleted'});
+  } catch (error) {
+    res.status(500).json({ code: 500, message: 'Internal Server Error' });
   }
 });
 
