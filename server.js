@@ -15,6 +15,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+const authRouter = require('./routes/auth');
+app.use('/auth', authRouter);
+
 const ideaRouter = require('./routes/ideas');
 app.use('/api/ideas', ideaRouter);
 
