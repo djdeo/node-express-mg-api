@@ -25,6 +25,18 @@ const IdeaSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+}, {
+  toJSON: {
+    virtuals: true
+  },
+  toObject: {
+    virtuals: true
+  },
+});
+
+// virtual property
+IdeaSchema.virtual('desc').get(function () {
+  return this.text.substring(0, 20);
 });
 
 module.exports = mongoose.model('Idea', IdeaSchema);

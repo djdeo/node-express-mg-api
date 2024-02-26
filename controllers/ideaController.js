@@ -87,10 +87,16 @@ exports.updateManyIdeas = async (req, res) => {
   try {
     const ideas = await Idea.updateMany(
       {},
-      [{ $set: { point: { $floor: { $multiply: [{ $rand: {} }, 100] } },
-      rate: {
-        $floor: { $multiply: [{ $rand: {} }, 10] }
-      } } }],
+      [
+        {
+          $set: {
+            point: { $floor: { $multiply: [{ $rand: {} }, 100] } },
+            rate: {
+              $floor: { $multiply: [{ $rand: {} }, 10] },
+            },
+          },
+        },
+      ],
       { upsert: true }
     )
     res.json({ code: 200, data: ideas })
