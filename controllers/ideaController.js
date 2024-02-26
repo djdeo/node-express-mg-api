@@ -1,6 +1,6 @@
 // idea controllers
-const Idea = require('../models/idea');
-const { wrapResponse } = require('../utils');
+const Idea = require('../models/idea')
+const { wrapResponse } = require('../utils')
 
 // get all ideas
 exports.getIdeas = async (req, res) => {
@@ -24,7 +24,7 @@ exports.getIdeas = async (req, res) => {
   } catch (error) {
     res.status(500).json({ code: 500, message: 'Internal Server Error' })
   }
-};
+}
 
 // create new idea
 exports.createIdea = async (req, res) => {
@@ -37,7 +37,7 @@ exports.createIdea = async (req, res) => {
     console.log('error', error)
     res.status(500).json({ code: 500, message: error.message })
   }
-};
+}
 
 // get idea by id
 exports.getIdea = async (req, res) => {
@@ -51,7 +51,7 @@ exports.getIdea = async (req, res) => {
   } catch (error) {
     res.status(500).json({ code: 500, message: 'Internal Server Error' })
   }
-};
+}
 
 // put idea by id
 exports.updateIdea = async (req, res) => {
@@ -79,5 +79,22 @@ exports.deleteIdea = async (req, res) => {
     res.json({ code: 200, message: 'deleted' })
   } catch (error) {
     res.status(500).json({ code: 500, message: 'Internal Server Error' })
+  }
+}
+
+// update many ideas with new property
+exports.updateManyIdeas = async (req, res) => {
+  try {
+    const ideas = await Idea.updateMany(
+      {},
+      [{ $set: { point: { $floor: { $multiply: [{ $rand: {} }, 100] } },
+      rate: {
+        $floor: { $multiply: [{ $rand: {} }, 10] }
+      } } }],
+      { upsert: true }
+    )
+    res.json({ code: 200, data: ideas })
+  } catch (error) {
+    res.status(500).json({ code: 500, message: error.message })
   }
 }

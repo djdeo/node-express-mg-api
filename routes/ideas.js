@@ -15,6 +15,10 @@ router
   .post(ideaController.createIdea)
 
 router
+  .route('/update')
+  .post(ideaController.updateManyIdeas)
+
+router
   .route('/:id')
   .get(ideaController.getIdea)
   .put(ideaController.updateIdea)

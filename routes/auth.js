@@ -20,16 +20,16 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { username, password } = req.body
 
-  // 1. 检查用户名是否存在
+  // 1. check user
   const user = await User.findOne({ username })
   if (!user) {
-    return res.status(404).json({ error: '用户名不存在' })
+    return res.status(404).json({ error: 'No such User, please try to signup' })
   }
 
-  // 2. 检查密码是否正确
+  // 2. check password
   const isMatch = await bcrypt.compare(password, user.password)
   if (!isMatch) {
-    return res.status(400).json({ error: '密码错误' })
+    return res.status(400).json({ error: 'Sorry, wrong password' })
   }
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
