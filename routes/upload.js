@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 // initialize the upload variable
 const upload = multer({ storage });
 
-const authen = require('../middleware/authen');
+const { authen } = require('../middleware/authen');
 // this 'avatar' field must be the name from the request body
 router.post('/img', authen, upload.single('avatar'), (req, res) => {
     res.send({message: 'success', path: req.file.filename });

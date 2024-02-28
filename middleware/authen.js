@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const authen = (req, res, next) => {
+exports.authen = (req, res, next) => {
   const token = req.header('jwt');
 
   // Check for token
@@ -20,4 +20,12 @@ const authen = (req, res, next) => {
   }
 };
 
-module.exports = authen;
+exports.permit = (...roles) => {
+  return (req, res, next) => {
+    console.log('req.user.role', req.body);
+    if (!roles.includes(req.body.role)) {
+      return res.status(401).json({ msg: 'Authorization denied' });
+    }
+    next();
+  };
+};

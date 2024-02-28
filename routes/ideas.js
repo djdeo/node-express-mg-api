@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const authen = require('../middleware/authen')
+const { authen, permit } = require('../middleware/authen')
 
 const { wrapResponse } = require('../utils')
 const ideaController = require('../controllers/ideaController')
@@ -22,6 +22,6 @@ router
   .route('/:id')
   .get(ideaController.getIdea)
   .put(ideaController.updateIdea)
-  .delete(ideaController.deleteIdea)
+  .delete(permit('admin', 'lead'), ideaController.deleteIdea)
 
 module.exports = router

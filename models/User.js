@@ -7,7 +7,20 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    minLength: 6,
+    select: false
+  },
+  passwordConfirm: {
+    type: String,
+    required: true,
+    validate: {
+      // This only works on CREATE and SAVE!!!
+      validator: function(el) {
+        return el === this.password;
+      },
+      message: 'Passwords are not the same!'
+    }
   },
   createdAt: {
     type: Date,
