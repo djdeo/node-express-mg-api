@@ -2,6 +2,7 @@
 const Idea = require('../models/idea')
 const { wrapResponse } = require('../utils')
 const { catchAsync } = require('../utils')
+const AppError = require('../utils/AppError')
 // get all ideas
 exports.getIdeas = async (req, res) => {
   try {

@@ -11,6 +11,8 @@ router.post('/signup', async (req, res) => {
   try {
     const user = new User({...req.body, password: hashedPwd})
     await user.save()
+    user.password = undefined
+    user.passwordConfirm = undefined
     res.status(201).json(user)
   } catch (error) {
     res.status(500).json({ error: error.message })
