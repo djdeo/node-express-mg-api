@@ -56,7 +56,7 @@ IdeaSchema.virtual('desc').get(function () {
 
 // Query Middleware
 IdeaSchema.pre('find', function (next) {
-  this.find({ isFamous: true });
+  // this.find({ isFamous: true });
   next();
 })
 

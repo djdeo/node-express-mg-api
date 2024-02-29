@@ -7,3 +7,9 @@ exports.catchAsync = (fn) => {
     fn(req, res, next).catch(next)
   }
 }
+
+exports.renderErrMsg = (res, err) => {
+  return res.status(500).json({
+    message: err.message,
+  });
+}

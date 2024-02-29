@@ -9,7 +9,7 @@ router.post('/signup', async (req, res) => {
   const { username, password } = req.body
   const hashedPwd = await bcrypt.hash(password, 10)
   try {
-    const user = new User({ username, password: hashedPwd })
+    const user = new User({...req.body, password: hashedPwd})
     await user.save()
     res.status(201).json(user)
   } catch (error) {
@@ -25,14 +25,13 @@ router.post('/login', async (req, res) => {
   if (!user) {
     return res.status(404).json({ error: 'No such User, please try to signup' })
   }
-
   // 2. check password
   const isMatch = await bcrypt.compare(password, user.password)
   if (!isMatch) {
     return res.status(400).json({ error: 'Sorry, wrong password' })
   }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: '1d',
   })
   res.status(200).json({ token })

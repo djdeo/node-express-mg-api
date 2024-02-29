@@ -25,6 +25,9 @@ app.use('/api/ideas', ideaRouter);
 const uploadRouter = require('./routes/upload');
 app.use('/upload', uploadRouter);
 
+const userRouter = require('./routes/users');
+app.use('/api/users', userRouter);
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
