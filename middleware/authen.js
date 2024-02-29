@@ -14,7 +14,6 @@ exports.authen = (req, res, next) => {
 
     // Add user from payload
     req.user = decoded;
-    console.log('req.user auth', req.user);
     next();
   } catch (e) {
     res.status(400).json({ msg: 'Token is not valid' });
@@ -23,7 +22,6 @@ exports.authen = (req, res, next) => {
 
 exports.permit = (...roles) => {
   return (req, res, next) => {
-    console.log('req.user', req.user);
     if (!roles.includes(req.user.role)) {
       return res.status(401).json({ msg: 'Authorization denied' });
     }
