@@ -4,10 +4,18 @@ const app = express();
 const port = process.env.PORT || 3000;
 const connectDB = require('./config/db');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+
 // Connect Database
 connectDB();
 // set public folder
 app.use(express.static('public'));
+
+// set security http headers
+app.use(helmet());
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
@@ -21,6 +29,15 @@ app.use('/api', limiter);
 // body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// sanitize data
+app.use(mongoSanitize());
+app.use(xss());
+app.use(hpp({
+  whitelist: [] // add what you want to ignore
+}));
+
+// enable cors
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
