@@ -8,7 +8,7 @@ const { authen, permit } = require('../middleware/authen');
 
 // Routes
 router
-  .get('/', authen, getAllUsers)
+  .get('/', getAllUsers)
   .post('/create', createUser)
   .get('/:id', authen, getUserById)
   .put('/:id', authen, updateUser)

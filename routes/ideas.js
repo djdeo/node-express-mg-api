@@ -7,7 +7,7 @@ const { wrapResponse } = require('../utils')
 const ideaController = require('../controllers/ideaController')
 
 // use authen middleware
-router.use(authen)
+// router.use(authen)
 // router with controllers
 router
   .route('/')

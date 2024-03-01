@@ -31,6 +31,12 @@ const IdeaSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    usedBy: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      },
+    ],
   },
   {
     toJSON: {
@@ -57,7 +63,7 @@ IdeaSchema.virtual('desc').get(function () {
 // Query Middleware
 IdeaSchema.pre('find', function (next) {
   // this.find({ isFamous: true });
-  next();
+  next()
 })
 
 module.exports = mongoose.model('Idea', IdeaSchema)

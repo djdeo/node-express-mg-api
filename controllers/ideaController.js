@@ -42,7 +42,10 @@ exports.createIdea = async (req, res) => {
 // get idea by id
 exports.getIdea = async (req, res) => {
   try {
-    const idea = await Idea.findById(req.params.id)
+    const idea = await Idea.findById(req.params.id).populate({
+      path: 'usedBy',
+      select: '-__v -updatedAt',
+    })
     res.json({
       code: 200,
       data: idea,
