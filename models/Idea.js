@@ -50,7 +50,7 @@ const IdeaSchema = new mongoose.Schema(
 
 // virtual property
 IdeaSchema.virtual('desc').get(function () {
-  return this.text.substring(0, 20)
+return this.text.substring(0, 20)
 })
 
 // Dcoument middleware: runs before .save() and .create()
@@ -59,6 +59,12 @@ IdeaSchema.virtual('desc').get(function () {
 //   // this.point = this.rate * 10;
 //   next()
 // })
+
+IdeaSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'idea',
+  localField: '_id',
+})
 
 // Query Middleware
 IdeaSchema.pre('find', function (next) {

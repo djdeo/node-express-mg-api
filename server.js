@@ -13,7 +13,7 @@ const authRouter = require('./routes/auth');
 const ideaRouter = require('./routes/ideas');
 const uploadRouter = require('./routes/upload');
 const userRouter = require('./routes/users');
-
+const reviewRouter = require('./routes/reviews');
 
 // Connect Database
 connectDB();
@@ -53,6 +53,7 @@ app.use('/auth', authRouter);
 app.use('/api/ideas', ideaRouter);
 app.use('/upload', uploadRouter);
 app.use('/api/users', userRouter);
+app.use('/api/reviews', reviewRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

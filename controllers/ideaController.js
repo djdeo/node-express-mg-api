@@ -42,10 +42,12 @@ exports.createIdea = async (req, res) => {
 // get idea by id
 exports.getIdea = async (req, res) => {
   try {
-    const idea = await Idea.findById(req.params.id).populate({
-      path: 'usedBy',
-      select: '-__v -updatedAt',
-    })
+    const idea = await Idea.findById(req.params.id)
+      .populate({
+        path: 'usedBy',
+        select: '-__v -updatedAt',
+      })
+      .populate('reviews')
     res.json({
       code: 200,
       data: idea,
@@ -71,7 +73,7 @@ exports.updateIdea = catchAsync(async (req, res) => {
 // delete idea by id
 exports.deleteIdea = catchAsync(async (req, res, next) => {
   const idea = await Idea.findByIdAndDelete(req.params.id)
-    res.json({ code: 200, message: 'deleted' })
+  res.json({ code: 200, message: 'deleted' })
 })
 
 // update many ideas with new property
