@@ -9,6 +9,12 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 
+const authRouter = require('./routes/auth');
+const ideaRouter = require('./routes/ideas');
+const uploadRouter = require('./routes/upload');
+const userRouter = require('./routes/users');
+
+
 // Connect Database
 connectDB();
 // set public folder
@@ -43,16 +49,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
-
-const ideaRouter = require('./routes/ideas');
 app.use('/api/ideas', ideaRouter);
-
-const uploadRouter = require('./routes/upload');
 app.use('/upload', uploadRouter);
-
-const userRouter = require('./routes/users');
 app.use('/api/users', userRouter);
 
 app.listen(port, () => {
