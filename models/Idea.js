@@ -59,6 +59,8 @@ return this.text.substring(0, 20)
 //   // this.point = this.rate * 10;
 //   next()
 // })
+// add index when need to query that field frequently for better performance
+IdeaSchema.index({rate: 1})
 
 IdeaSchema.virtual('reviews', {
   ref: 'Review',

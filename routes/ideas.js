@@ -22,6 +22,6 @@ router
   .route('/:id')
   .get(ideaController.getIdea)
   .put(ideaController.updateIdea)
-  .delete(permit('admin', 'lead'), ideaController.deleteIdea)
+  .delete(ideaController.deleteIdea)
 
 module.exports = router

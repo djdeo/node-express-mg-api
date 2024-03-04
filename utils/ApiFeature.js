@@ -1,11 +1,11 @@
-class ApiFeature {
+class APIFeature {
   constructor(model, queryString) {
     this.model = model;
     this.queryString = queryString;
   }
 
   filter() {
-    const queryObj = { ...this.queryString.query };
+    const queryObj = { ...this.queryString };
     const excludedFields = ["page", "sort", "limit"];
     excludedFields.forEach((el) => delete queryObj[el]);
 
@@ -50,4 +50,4 @@ class ApiFeature {
   }
 }
 
-module.exports = APIFeatures;
+module.exports = APIFeature;
