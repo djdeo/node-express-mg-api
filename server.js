@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 
 const authRouter = require('./routes/auth');
 const ideaRouter = require('./routes/ideas');
@@ -19,7 +20,7 @@ const reviewRouter = require('./routes/reviews');
 connectDB();
 // set public folder
 app.use(express.static('public'));
-
+app.use(cors());
 // set security http headers
 app.use(helmet());
 
